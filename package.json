@@ -1,0 +1,37 @@
+{
+  "name": "linvis-ai-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Linvis AI Studio — 平台无关的本地 AI 视频制作引擎（Remotion + FFmpeg + faster-whisper）",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "linvis": "./engine/bin/linvis.mjs"
+  },
+  "scripts": {
+    "linvis": "node engine/bin/linvis.mjs",
+    "doctor": "node engine/bin/linvis.mjs doctor",
+    "list": "node engine/bin/linvis.mjs list",
+    "studio": "remotion studio video/index.ts",
+    "verify:pi": "node tools/verify-pi-skill.mjs",
+    "render:ep01": "node engine/bin/linvis.mjs render EP01-LLM-Harness --force",
+    "inspect:ep01": "node engine/bin/linvis.mjs inspect EP01-LLM-Harness"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.540",
+    "@remotion/captions": "4.0.540",
+    "@remotion/cli": "4.0.540",
+    "@remotion/media": "4.0.540",
+    "@remotion/renderer": "4.0.540",
+    "@remotion/transitions": "4.0.540",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.540"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "typescript": "5.7.3"
+  }
+}

@@ -1,0 +1,16 @@
+# Linvis AI Studio 不需要提交的产物
+node_modules/
+.venv/
+out/
+*.log
+
+# Remotion 中间产物
+out/.bundle/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 注意：projects/ 与 assets/ 必须提交 —— 它们是可复现的工程源

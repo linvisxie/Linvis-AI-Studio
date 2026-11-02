@@ -1,0 +1,57 @@
+{
+  "$schema": "../../engine/schema/project.schema.json",
+  "id": "TEST-Captions",
+  "title": "字幕能力验证 — 真人配音导入 + 自动字幕",
+  "description": "验证配音导入、faster-whisper/openai-whisper 转写、词级高亮字幕渲染。配音为 SAPI 生成的英文占位音频（PLACEHOLDER），仅用于流程验证。",
+  "placeholder": true,
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationInFrames": 222,
+    "backgroundColor": "#050710"
+  },
+  "theme": {
+    "accent": "#00e5ff",
+    "accentAlt": "#ff0044",
+    "ink": "#ffffff"
+  },
+  "scenes": [
+    {
+      "id": "s1-voice",
+      "type": "voice-caption",
+      "from": 0,
+      "durationInFrames": 222,
+      "props": {
+        "headline": "语音 → 字幕",
+        "speaker": "PLACEHOLDER VOICE",
+        "fontSize": 50,
+        "bottom": 300
+      }
+    }
+  ],
+  "audio": {
+    "layers": [
+      {
+        "id": "voice",
+        "src": "PLACEHOLDER-voice-en.wav",
+        "from": 0,
+        "volume": 1.0,
+        "placeholder": true
+      }
+    ]
+  },
+  "captions": {
+    "enabled": true,
+    "src": "captions.json",
+    "style": { "fontSize": 50, "bottom": 300, "color": "#ffffff", "highlight": "#00e5ff" }
+  },
+  "licenses": [
+    {
+      "asset": "PLACEHOLDER-voice-en.wav",
+      "license": "占位音频（Windows SAPI 合成，非最终配音）",
+      "source": "tools/make-placeholder-voice.mjs",
+      "note": "⚠️ PLACEHOLDER：仅用于验证字幕管线，禁止作为最终交付配音。"
+    }
+  ]
+}

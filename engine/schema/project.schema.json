@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Linvis Project Config",
+  "type": "object",
+  "required": ["id", "title", "video", "scenes"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "placeholder": { "type": "boolean" },
+    "video": {
+      "type": "object",
+      "required": ["width", "height", "fps", "durationInFrames"],
+      "additionalProperties": false,
+      "properties": {
+        "width": { "type": "integer", "minimum": 16, "maximum": 4096 },
+        "height": { "type": "integer", "minimum": 16, "maximum": 4096 },
+        "fps": { "type": "integer", "minimum": 1, "maximum": 120 },
+        "durationInFrames": { "type": "integer", "minimum": 1 },
+        "backgroundColor": { "type": "string" }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "accent": { "type": "string" },
+        "accentAlt": { "type": "string" },
+        "ink": { "type": "string" },
+        "fontFamily": { "type": "string" }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "from", "durationInFrames"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string" },
+          "type": {
+            "enum": [
+              "impact-title",
+              "reveal-question",
+              "image-scene",
+              "text-lines",
+              "shape-motion",
+              "voice-caption",
+              "cold-open",
+              "dissolve",
+              "blank"
+            ]
+          },
+          "from": { "type": "integer", "minimum": 0 },
+          "durationInFrames": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "src", "from"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string" },
+              "src": { "type": "string" },
+              "from": { "type": "integer", "minimum": 0 },
+              "volume": { "type": "number", "minimum": 0, "maximum": 4 },
+              "fadeInFrames": { "type": "integer", "minimum": 0 },
+              "fadeOutFrames": { "type": "integer", "minimum": 0 },
+              "placeholder": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "captions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "src": { "type": "string" },
+        "style": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "fontSize": { "type": "number" },
+            "bottom": { "type": "number" },
+            "color": { "type": "string" },
+            "highlight": { "type": "string" }
+          }
+        }
+      }
+    },
+    "licenses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["asset", "license"],
+        "additionalProperties": true,
+        "properties": {
+          "asset": { "type": "string" },
+          "license": { "type": "string" },
+          "source": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

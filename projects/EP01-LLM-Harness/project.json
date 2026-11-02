@@ -1,0 +1,103 @@
+{
+  "$schema": "../../engine/schema/project.schema.json",
+  "id": "EP01-LLM-Harness",
+  "title": "EP01 — AI 为什么只会聊天，却不会自己生活？",
+  "description": "首期验收样片：8–10 秒电影预告片式开场。黑暗科技风格。音乐与音效由 engine/lib/audio.mjs 程序化合成（无第三方版权）。",
+  "placeholder": false,
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationInFrames": 285,
+    "backgroundColor": "#04050a"
+  },
+  "theme": {
+    "accent": "#00e5ff",
+    "accentAlt": "#ff0044",
+    "ink": "#ffffff"
+  },
+  "scenes": [
+    {
+      "id": "s1-cold-open",
+      "type": "cold-open",
+      "from": 0,
+      "durationInFrames": 36,
+      "props": {
+        "hud": "SYSTEM // ONLINE",
+        "whisper": "正在载入……"
+      }
+    },
+    {
+      "id": "s2-impact",
+      "type": "impact-title",
+      "from": 36,
+      "durationInFrames": 72,
+      "props": {
+        "kicker": "LINVIS · EP01",
+        "text": "AI 要取代人类了！",
+        "tag": "这是今天的头条",
+        "hitFrame": 0,
+        "fontSize": 168
+      }
+    },
+    {
+      "id": "s3-silence",
+      "type": "blank",
+      "from": 108,
+      "durationInFrames": 21,
+      "props": {}
+    },
+    {
+      "id": "s4-dissolve",
+      "type": "dissolve",
+      "from": 129,
+      "durationInFrames": 51,
+      "props": {
+        "flashes": [
+          "写诗。",
+          "编程。",
+          "考试。",
+          "陪你聊天。",
+          "它什么都会。"
+        ],
+        "finalLine": "除了……活着。"
+      }
+    },
+    {
+      "id": "s5-question",
+      "type": "reveal-question",
+      "from": 180,
+      "durationInFrames": 105,
+      "props": {
+        "kicker": "但是",
+        "question": "但你有没有想过",
+        "sublines": [
+          "它连「自己活下去」都做不到",
+          "而你，刚刚把电费交了"
+        ],
+        "fontSize": 104
+      }
+    }
+  ],
+  "audio": {
+    "layers": [
+      {
+        "id": "ep01-open-master",
+        "src": "ep01-open.wav",
+        "from": 0,
+        "volume": 1.0,
+        "fadeInFrames": 0,
+        "fadeOutFrames": 20
+      }
+    ]
+  },
+  "captions": { "enabled": false },
+  "licenses": [
+    {
+      "asset": "ep01-open.wav",
+      "license": "原创（程序化合成，CC0 等效）",
+      "source": "assets/recipes/ep01-open.json + engine/lib/audio.mjs",
+      "note": "确定性数学合成，无第三方采样。相同配方必然生成同一音频。"
+    }
+  ]
+}

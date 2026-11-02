@@ -1,0 +1,121 @@
+{
+  "$comment": "EP01 开场 9.5s 音轨。全部由 engine/lib/audio.mjs 程序化合成，无第三方版权采样。时间轴与 project.json 的 285 帧（30fps）严格对齐。",
+  "durationSec": 9.5,
+  "masterGain": 1.25,
+  "peak": 0.89,
+  "deClickMs": 12,
+  "layers": [
+    {
+      "$note": "[0.00-1.20s / frame 0-35] 冷开场：极低频底噪，建立空间",
+      "gen": "drone",
+      "at": 0.0,
+      "gain": 0.7,
+      "spec": { "durationSec": 1.35, "rootHz": 46, "intervals": [1, 1.5, 2, 3], "gain": 0.24, "cutoff": 300, "wobbleHz": 0.16, "seed": 33 }
+    },
+    {
+      "$note": "[0.00-1.20s] 升压 sweep，尾端直冲撞击点",
+      "gen": "riser",
+      "at": 0.0,
+      "gain": 0.85,
+      "spec": { "durationSec": 1.24, "fromHz": 150, "toHz": 3600, "gain": 0.32, "shape": 3.0, "seed": 21 }
+    },
+    {
+      "$note": "[0.20-1.20s] 系统心跳，三下倒数",
+      "gen": "pulse",
+      "at": 0.18,
+      "gain": 0.5,
+      "spec": { "durationSec": 1.04, "bpm": 150, "gain": 0.30, "rootHz": 64, "seed": 61 }
+    },
+    {
+      "$note": "[1.20s / frame 36] 主撞击 —— 与「AI 要取代人类了！」同帧",
+      "gen": "impact",
+      "at": 1.2,
+      "gain": 1.1,
+      "spec": { "durationSec": 2.4, "startHz": 132, "endHz": 31, "decay": 3.3, "subGain": 1.25, "bodyGain": 0.65, "transientGain": 0.62, "tailGain": 0.36, "tailDecay": 1.9, "distortion": 1.35, "seed": 7, "stereo": 0.18 }
+    },
+    {
+      "$note": "[1.235s] 二次金属撕裂，制造冲击层",
+      "gen": "impact",
+      "at": 1.235,
+      "gain": 0.5,
+      "spec": { "durationSec": 1.4, "startHz": 260, "endHz": 72, "decay": 6.0, "subGain": 0.3, "bodyGain": 1.0, "transientGain": 0.8, "tailGain": 0.22, "distortion": 1.8, "seed": 19, "stereo": 0.4 }
+    },
+    {
+      "$note": "[1.20-3.60s / frame 36-107] 撞击后的紧张推进",
+      "gen": "pulse",
+      "at": 1.3,
+      "gain": 0.6,
+      "spec": { "durationSec": 2.32, "bpm": 138, "gain": 0.34, "rootHz": 56, "seed": 71 }
+    },
+    {
+      "$note": "[1.60-3.60s] 数字噪点，科技冷感",
+      "gen": "ticks",
+      "at": 1.6,
+      "gain": 0.45,
+      "spec": { "durationSec": 2.0, "rate": 14, "gain": 0.14, "brightHz": 3900, "seed": 55 }
+    },
+    {
+      "$note": "[3.60s] 反向 swell 收尾，把音乐推到断点",
+      "gen": "swell",
+      "at": 3.32,
+      "gain": 0.6,
+      "spec": { "durationSec": 0.30, "gain": 0.34, "hpHz": 2900, "seed": 91 }
+    },
+    {
+      "$note": "[3.60-4.30s / frame 108-128] 音乐硬停：此区间刻意不放置任何发声层，留真空",
+      "gen": "silence",
+      "at": 3.6,
+      "gain": 0.0,
+      "spec": { "durationSec": 0.70 }
+    },
+    {
+      "$note": "[4.30-6.00s / frame 129-179] 问题扩散：稀疏电子脉冲，随快切加速",
+      "gen": "ticks",
+      "at": 4.3,
+      "gain": 0.55,
+      "spec": { "durationSec": 1.7, "rate": 6, "gain": 0.15, "brightHz": 2600, "seed": 63 }
+    },
+    {
+      "$note": "[4.30-6.00s] 低音回升，很克制的压迫",
+      "gen": "drone",
+      "at": 4.28,
+      "gain": 0.45,
+      "spec": { "durationSec": 1.8, "rootHz": 43, "intervals": [1, 1.5, 2.99], "gain": 0.18, "cutoff": 260, "wobbleHz": 0.12, "seed": 45 }
+    },
+    {
+      "$note": "[5.55-6.00s] 收束到反问前的最后一次升压",
+      "gen": "riser",
+      "at": 5.5,
+      "gain": 0.42,
+      "spec": { "durationSec": 0.52, "fromHz": 200, "toHz": 1400, "gain": 0.24, "shape": 2.0, "seed": 44 }
+    },
+    {
+      "$note": "[6.00s / frame 180] 反问落地：一声低沉心跳",
+      "gen": "impact",
+      "at": 6.0,
+      "gain": 0.55,
+      "spec": { "durationSec": 1.5, "startHz": 78, "endHz": 34, "decay": 5.2, "subGain": 0.9, "bodyGain": 0.35, "transientGain": 0.12, "tailGain": 0.3, "tailDecay": 2.4, "distortion": 1.05, "seed": 83, "stereo": 0.1 }
+    },
+    {
+      "$note": "[6.00-9.50s / frame 180-284] 反问段：极轻环境共振，不抢文字",
+      "gen": "drone",
+      "at": 6.0,
+      "gain": 0.4,
+      "spec": { "durationSec": 3.5, "rootHz": 40, "intervals": [1, 2, 3, 4.02], "gain": 0.15, "cutoff": 230, "wobbleHz": 0.06, "seed": 77 }
+    },
+    {
+      "$note": "[6.60-9.30s] 缓慢心跳，把观众带入思考",
+      "gen": "pulse",
+      "at": 6.7,
+      "gain": 0.45,
+      "spec": { "durationSec": 2.7, "bpm": 52, "gain": 0.26, "rootHz": 50, "seed": 87 }
+    },
+    {
+      "$note": "[8.40-9.50s] 结尾轻推，留悬念（下一期钩子）",
+      "gen": "riser",
+      "at": 8.4,
+      "gain": 0.4,
+      "spec": { "durationSec": 1.1, "fromHz": 170, "toHz": 820, "gain": 0.22, "shape": 1.7, "seed": 99 }
+    }
+  ]
+}
