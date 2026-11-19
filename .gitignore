@@ -7,6 +7,9 @@ out/
 # Remotion 中间产物
 out/.bundle/
 
+# 渲染时自动从 projects/ 复制的素材缓存（可由 linvis render 重新生成）
+video/public/_project/
+
 # 系统与编辑器
 .DS_Store
 Thumbs.db

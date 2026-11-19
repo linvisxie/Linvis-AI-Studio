@@ -46,6 +46,8 @@
               "impact-title",
               "reveal-question",
               "image-scene",
+              "video-scene",
+              "concept-scene",
               "text-lines",
               "shape-motion",
               "voice-caption",
@@ -63,6 +65,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "recipe": { "type": "string" },
         "layers": {
           "type": "array",
           "items": {
@@ -76,7 +79,8 @@
               "volume": { "type": "number", "minimum": 0, "maximum": 4 },
               "fadeInFrames": { "type": "integer", "minimum": 0 },
               "fadeOutFrames": { "type": "integer", "minimum": 0 },
-              "placeholder": { "type": "boolean" }
+              "placeholder": { "type": "boolean" },
+              "role": { "enum": ["voice", "music", "sfx"] }
             }
           }
         }

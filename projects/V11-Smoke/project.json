@@ -1,0 +1,99 @@
+{
+  "$schema": "../../engine/schema/project.schema.json",
+  "id": "V11-Smoke",
+  "title": "V1.1 最小可行验证 — 剪映草稿七要素",
+  "description": "覆盖任务第六节要求的七项：背景图片、本地视频、测试配音、背景音乐、中文字幕、标题文字、淡入。配音为 Windows SAPI 中文合成，明确标记 placeholder。",
+  "placeholder": true,
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationInFrames": 240,
+    "backgroundColor": "#04050a"
+  },
+  "theme": {
+    "accent": "#00e5ff"
+  },
+  "scenes": [
+    {
+      "id": "s1-image",
+      "type": "image-scene",
+      "from": 0,
+      "durationInFrames": 90,
+      "props": {
+        "src": "bg.png",
+        "title": "背景图片 · 淡入",
+        "pan": "in",
+        "zoomAmount": 1.12,
+        "enter": "fade"
+      }
+    },
+    {
+      "id": "s2-image2",
+      "type": "image-scene",
+      "from": 90,
+      "durationInFrames": 150,
+      "props": {
+        "src": "bg.png",
+        "title": "第二段 · 转场",
+        "pan": "out",
+        "zoomAmount": 1.2,
+        "enter": "wipe"
+      }
+    }
+  ],
+  "audio": {
+    "layers": [
+      {
+        "id": "voice",
+        "role": "voice",
+        "src": "PLACEHOLDER-voice-zh.wav",
+        "from": 0,
+        "volume": 1.0,
+        "placeholder": true
+      },
+      {
+        "id": "bgm",
+        "role": "music",
+        "src": "bgm.wav",
+        "from": 0,
+        "volume": 0.25,
+        "fadeInFrames": 20,
+        "fadeOutFrames": 24
+      }
+    ]
+  },
+  "captions": {
+    "enabled": true,
+    "src": "captions.json",
+    "style": {
+      "fontSize": 50,
+      "bottom": 300,
+      "color": "#ffffff",
+      "highlight": "#00e5ff"
+    }
+  },
+  "licenses": [
+    {
+      "asset": "bg.png",
+      "source": "程序化生成（Pillow）",
+      "license": "CC0 等效，本工程原创"
+    },
+    {
+      "asset": "clip.mp4",
+      "source": "本地测试片段",
+      "license": "本工程原创测试素材"
+    },
+    {
+      "asset": "bgm.wav",
+      "source": "linvis audio 程序化合成",
+      "license": "CC0 等效，本工程原创"
+    },
+    {
+      "asset": "PLACEHOLDER-voice-zh.wav",
+      "source": "Windows SAPI 中文语音 Huihui 合成",
+      "license": "占位音频，非最终交付，不得作为真人验收证据",
+      "placeholder": true
+    }
+  ]
+}

@@ -1,149 +1,269 @@
 {
   "ok": true,
   "engine": "openai-whisper",
-  "model": "base",
+  "model": "small",
   "device": "cpu",
   "computeType": "fp32",
-  "language": "en",
+  "language": "zh",
   "languageProb": null,
-  "durationSec": 7.38,
+  "durationSec": 9.96,
   "fps": 30,
   "captions": [
     {
       "from": 0,
-      "to": 95,
-      "fromSec": 0.0,
-      "toSec": 3.16,
-      "text": "The quick brown fox jumps over the lazy dog."
+      "to": 183,
+      "fromSec": 0,
+      "toSec": 6.1,
+      "text": "人工智能不只会聊天,他还能自己写代码,自己剪辑视频。"
     },
     {
-      "from": 112,
-      "to": 221,
-      "fromSec": 3.74,
-      "toSec": 7.38,
-      "text": "Artificial intelligence cannot live by itself."
+      "from": 210,
+      "to": 299,
+      "fromSec": 7,
+      "toSec": 9.96,
+      "text": "今天我们来看看他是怎么做到的。"
     }
   ],
   "words": [
     {
-      "text": "The",
+      "text": "人",
       "from": 0,
       "to": 11,
-      "fromSec": 0.0,
-      "toSec": 0.36,
-      "prob": 0.8632
+      "fromSec": 0,
+      "toSec": 0.38,
+      "prob": 0.9332
     },
     {
-      "text": "quick",
+      "text": "工",
       "from": 11,
-      "to": 20,
-      "fromSec": 0.36,
-      "toSec": 0.68,
-      "prob": 0.9418
+      "to": 18,
+      "fromSec": 0.38,
+      "toSec": 0.6,
+      "prob": 0.9944
     },
     {
-      "text": "brown",
-      "from": 20,
+      "text": "智",
+      "from": 18,
+      "to": 22,
+      "fromSec": 0.6,
+      "toSec": 0.74,
+      "prob": 0.9967
+    },
+    {
+      "text": "能",
+      "from": 22,
       "to": 30,
-      "fromSec": 0.68,
-      "toSec": 1.0,
-      "prob": 0.873
+      "fromSec": 0.74,
+      "toSec": 1,
+      "prob": 0.9666
     },
     {
-      "text": "fox",
+      "text": "不",
       "from": 30,
-      "to": 40,
-      "fromSec": 1.0,
-      "toSec": 1.34,
-      "prob": 0.9553
+      "to": 36,
+      "fromSec": 1,
+      "toSec": 1.2,
+      "prob": 0.9915
     },
     {
-      "text": "jumps",
-      "from": 40,
-      "to": 52,
-      "fromSec": 1.34,
-      "toSec": 1.74,
-      "prob": 0.9918
+      "text": "只",
+      "from": 36,
+      "to": 42,
+      "fromSec": 1.2,
+      "toSec": 1.4,
+      "prob": 0.8757
     },
     {
-      "text": "over",
-      "from": 52,
+      "text": "会",
+      "from": 42,
+      "to": 48,
+      "fromSec": 1.4,
+      "toSec": 1.6,
+      "prob": 0.6647
+    },
+    {
+      "text": "聊",
+      "from": 48,
+      "to": 53,
+      "fromSec": 1.6,
+      "toSec": 1.78,
+      "prob": 0.9966
+    },
+    {
+      "text": "天,",
+      "from": 53,
       "to": 66,
-      "fromSec": 1.74,
+      "fromSec": 1.78,
       "toSec": 2.2,
-      "prob": 0.9954
+      "prob": 0.9998
     },
     {
-      "text": "the",
-      "from": 66,
-      "to": 72,
-      "fromSec": 2.2,
-      "toSec": 2.4,
-      "prob": 0.9938
+      "text": "他",
+      "from": 77,
+      "to": 82,
+      "fromSec": 2.56,
+      "toSec": 2.72,
+      "prob": 0.5494
     },
     {
-      "text": "lazy",
-      "from": 72,
-      "to": 79,
-      "fromSec": 2.4,
-      "toSec": 2.64,
-      "prob": 0.9747
+      "text": "还",
+      "from": 82,
+      "to": 89,
+      "fromSec": 2.72,
+      "toSec": 2.98,
+      "prob": 0.981
     },
     {
-      "text": "dog.",
-      "from": 79,
-      "to": 95,
-      "fromSec": 2.64,
-      "toSec": 3.16,
-      "prob": 0.9746
+      "text": "能",
+      "from": 89,
+      "to": 96,
+      "fromSec": 2.98,
+      "toSec": 3.2,
+      "prob": 0.9925
     },
     {
-      "text": "Artificial",
-      "from": 112,
-      "to": 140,
-      "fromSec": 3.74,
-      "toSec": 4.66,
-      "prob": 0.9808
+      "text": "自己",
+      "from": 96,
+      "to": 106,
+      "fromSec": 3.2,
+      "toSec": 3.54,
+      "prob": 0.996
     },
     {
-      "text": "intelligence",
-      "from": 140,
-      "to": 164,
-      "fromSec": 4.66,
-      "toSec": 5.46,
-      "prob": 0.9557
+      "text": "写",
+      "from": 106,
+      "to": 115,
+      "fromSec": 3.54,
+      "toSec": 3.82,
+      "prob": 0.9972
     },
     {
-      "text": "cannot",
-      "from": 164,
-      "to": 178,
-      "fromSec": 5.46,
-      "toSec": 5.94,
-      "prob": 0.9705
+      "text": "代",
+      "from": 115,
+      "to": 124,
+      "fromSec": 3.82,
+      "toSec": 4.12,
+      "prob": 0.9886
     },
     {
-      "text": "live",
-      "from": 178,
-      "to": 192,
-      "fromSec": 5.94,
-      "toSec": 6.4,
-      "prob": 0.9734
+      "text": "码,",
+      "from": 124,
+      "to": 129,
+      "fromSec": 4.12,
+      "toSec": 4.3,
+      "prob": 0.9965
     },
     {
-      "text": "by",
-      "from": 192,
-      "to": 202,
-      "fromSec": 6.4,
-      "toSec": 6.72,
-      "prob": 0.9993
+      "text": "自己",
+      "from": 143,
+      "to": 153,
+      "fromSec": 4.78,
+      "toSec": 5.1,
+      "prob": 0.9905
     },
     {
-      "text": "itself.",
-      "from": 202,
-      "to": 221,
-      "fromSec": 6.72,
-      "toSec": 7.38,
-      "prob": 0.8989
+      "text": "剪",
+      "from": 153,
+      "to": 160,
+      "fromSec": 5.1,
+      "toSec": 5.32,
+      "prob": 0.9636
+    },
+    {
+      "text": "辑",
+      "from": 160,
+      "to": 168,
+      "fromSec": 5.32,
+      "toSec": 5.6,
+      "prob": 0.9355
+    },
+    {
+      "text": "视",
+      "from": 168,
+      "to": 175,
+      "fromSec": 5.6,
+      "toSec": 5.82,
+      "prob": 0.9976
+    },
+    {
+      "text": "频。",
+      "from": 175,
+      "to": 183,
+      "fromSec": 5.82,
+      "toSec": 6.1,
+      "prob": 0.9981
+    },
+    {
+      "text": "今天",
+      "from": 210,
+      "to": 223,
+      "fromSec": 7,
+      "toSec": 7.42,
+      "prob": 0.984
+    },
+    {
+      "text": "我们",
+      "from": 223,
+      "to": 235,
+      "fromSec": 7.42,
+      "toSec": 7.82,
+      "prob": 0.9812
+    },
+    {
+      "text": "来",
+      "from": 235,
+      "to": 243,
+      "fromSec": 7.82,
+      "toSec": 8.1,
+      "prob": 0.996
+    },
+    {
+      "text": "看看",
+      "from": 243,
+      "to": 253,
+      "fromSec": 8.1,
+      "toSec": 8.44,
+      "prob": 0.9856
+    },
+    {
+      "text": "他是",
+      "from": 253,
+      "to": 268,
+      "fromSec": 8.44,
+      "toSec": 8.94,
+      "prob": 0.8819
+    },
+    {
+      "text": "怎么",
+      "from": 268,
+      "to": 280,
+      "fromSec": 8.94,
+      "toSec": 9.32,
+      "prob": 0.9499
+    },
+    {
+      "text": "做",
+      "from": 280,
+      "to": 287,
+      "fromSec": 9.32,
+      "toSec": 9.56,
+      "prob": 0.9979
+    },
+    {
+      "text": "到",
+      "from": 287,
+      "to": 293,
+      "fromSec": 9.56,
+      "toSec": 9.76,
+      "prob": 0.9786
+    },
+    {
+      "text": "的。",
+      "from": 293,
+      "to": 299,
+      "fromSec": 9.76,
+      "toSec": 9.96,
+      "prob": 0.9987
     }
   ]
 }

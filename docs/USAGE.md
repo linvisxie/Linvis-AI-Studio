@@ -38,8 +38,12 @@ node engine/bin/linvis.mjs inspect EP01-LLM-Harness
 | `captions <proj> --audio <f>` | 语音转字幕（词级时间戳） | 1–5 min |
 | `preview <proj>` | 半分辨率快速预览 | ~15s |
 | `render <proj>` | 完整渲染 + 响度归一 | ~40s |
+| `scenes <proj>` | 逐镜头分段渲染（供剪映逐轨编辑） | 按镜头数 |
 | `still <proj> --frame N` | 导出单帧 PNG 调试 | ~8s |
 | `inspect <proj>` | 质检：分辨率/帧率/时长/编码/亮度/响度 | ~10s |
+| `jianying <proj> --name <名>` | 生成剪映原生可编辑草稿 | ~1s |
+| `jianying inspect <名>` | 检查剪映草稿完整性（引用/媒体/版本） | < 1s |
+| `duck <proj> --compare` | 配音侧链压缩背景音乐（口播 ducking） | ~2s |
 
 通用参数：`--force`、`--json`、`--out <file>`、`--scale <n>`、`--crf <n>`、`--no-loudnorm`
 
@@ -179,6 +183,105 @@ node tools/make-placeholder-voice.mjs "测试文本" "projects/X/assets/PLACEHOL
 | 容器 | MP4（faststart） |
 
 `render` 会自动做响度归一，并把未归一的原始渲染保留为 `*-raw.mp4` 供对比。
+
+---
+
+## 6.5 剪映原生草稿（V1.1）
+
+把工程导出成本机剪映可直接打开、可逐轨编辑的草稿。
+
+```bash
+# 生成（自动发现本机剪映的 schema 骨架）
+node engine/bin/linvis.mjs jianying EP01-LLM-Harness --name 第一期开场
+
+# 质检
+node engine/bin/linvis.mjs jianying inspect 第一期开场
+```
+
+产物落在剪映草稿根目录（默认 `D:/剪映/剪映草稿/JianyingPro Drafts`），
+打开剪映 → 本地草稿 即可看到。
+
+**动画镜头必须先分段渲染**
+
+Remotion 动画镜头（`impact-title` / `cold-open` / `dissolve` / `reveal-question` 等）
+没有静态素材文件。要让它们进剪映，必须先逐镜头渲染成片段：
+
+```bash
+# 1. 逐镜头渲染（每个镜头一个 mp4）
+node engine/bin/linvis.mjs scenes <project>
+
+# 只渲指定镜头（可逗号分隔）
+node engine/bin/linvis.mjs scenes <project> --scene s2-impact,s4-dissolve
+
+# 2. 再生成剪映草稿（会自动引用这些片段）
+node engine/bin/linvis.mjs jianying <project> --name <草稿名>
+```
+
+片段落在 `out/render/scenes/<projectId>/<序号>-<sceneId>.mp4`。
+适配器会自动扫描该目录并按 sceneId 建立索引（序号仅用于排序，不参与身份判断）。
+
+**关键点**
+
+- 逐镜头渲染复用同一个 bundle，比整片渲染慢不了多少（bundle 约 10s，之后每镜头单独渲）。
+- 每个片段**自带音轨**，保证剪映里音画不错位。区间内本来没音频就是静音轨，不伪造。
+- 逐镜头片段**不做响度归一** —— 它们是"素材"不是"成片"，归一应在最终合成后做，
+  否则每段各自归一会导致拼接处音量跳变。
+- 已实测：5 个片段每帧与整片同一时刻渲染结果一致（平均差 < 1.0，属编码噪声级）。
+
+**轨道映射**
+
+| project.json | 剪映草稿 |
+|---|---|
+| `audio.layers[]` | 每条一条独立音频轨（配音、BGM、音效各自可调） |
+| `scenes[].props.image` / `.src` | 画面轨片段 |
+| `scenes[].props.text` | 标题文字轨，每个镜头一条 |
+| `captions`（whisper 结果） | 字幕轨，**每句一条**，可在剪映里逐句改 |
+
+**关键设计**
+
+- 写的是**明文** `draft_content.json`。剪映自己会在保存时加密，
+  不需要（也无法在进程外）调用 11.7 的加密接口。
+- schema 骨架来自**本机剪映自己创建过的草稿**，因此 schema 恒等于当前版本。
+  没装剪映或找不到骨架时会明确报错，不猜。
+- Remotion 动画镜头没有静态素材，不会伪造占位画面；这类镜头只保留文字层，
+  并在 stdout 打印明确警告。
+
+**常用参数**
+
+| 参数 | 作用 |
+|---|---|
+| `--name <名>` | 草稿名（= 目录名），默认用工程 id |
+| `--draft-root <dir>` | 剪映草稿根目录，默认自动发现 |
+| `--skeleton <dir>` | 指定骨架草稿，默认自动找最新的一个 |
+| `--force` | 覆盖同名草稿（草稿正被剪映打开时会明确拒绝） |
+
+**限制（如实说明）**
+
+- 仅实测剪映 **11.7.0.14652**。其他版本待验证。
+- 不支持剪映内自动导出 MP4（剪映 7+ 无此接口），需在剪映里手动导出。
+- 动画镜头需先用 `linvis render` 导出为片段，才能作为画面导入。
+
+---
+
+## 6.6 侧链压缩（口播 ducking）
+
+真人说话时自动压低 BGM，说完平滑恢复。
+
+```bash
+# 工程 audio.layers 里标 role
+#   {"id":"voice","role":"voice","src":"录音.wav"}
+#   {"id":"bgm","role":"music","src":"bgm.wav","volume":0.25}
+
+node engine/bin/linvis.mjs duck EP01-LLM-Harness --compare
+```
+
+输出 `projects/<id>/assets/<id>-ducked.wav`；
+`--compare` 额外输出 `.flat.wav`（同样两轨但不压缩）用于 A/B 试听。
+
+可调参数：`--threshold 0.05 --ratio 8 --attack 20 --release 400 --musicGain 1.0 --voiceGain 1.0`
+
+实测（96 帧 RMS 对比）：76 帧音乐被压低，平均 -1.93 dB，最深 -9.68 dB，
+且压低深度与人声强度正相关。
 
 ---
 

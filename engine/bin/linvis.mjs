@@ -25,9 +25,20 @@ const HELP = `Linvis AI Studio v1.0 — 本地 AI 视频引擎
   captions <project>        用 whisper 转写配音生成字幕
   preview <project>         低成本预览（半分辨率 / 快编码）
   render <project>          渲染完整视频 1080x1920
+  scenes <project>          逐镜头分段渲染（供剪映逐轨编辑）
   still <project>           导出单帧 PNG 用于调试
   inspect <project>         检查输出视频质量
   list                      列出所有工程
+  jianying <project>        生成剪映原生可编辑草稿
+  jianying inspect <name>   检查剪映草稿完整性
+  duck <project>            配音侧链压缩背景音乐（口播 ducking）
+  voice <project> --audio <f> 整理真实录音（不覆盖源文件）
+  handoff <project>         导出可移植素材、SRT 与时间轴交接包
+  openchatcut status        检查本机官方 MCP 的全新连接
+  openchatcut self-test     独立工程两轮保存/新连接回读测试
+  openchatcut inspect --editor-project <id>  全新连接回读工程
+  openchatcut verify --package <dir> --editor-project <id>  按交接包核对已保存时间线
+  openchatcut push <project> --package <dir> --editor-project <id> --name <新序列名>
 
 通用参数:
   --project <ref>           工程名或路径
@@ -40,6 +51,8 @@ const HELP = `Linvis AI Studio v1.0 — 本地 AI 视频引擎
   --recipe <name>           audio 使用的配方名（默认 ep01-open）
   --audio <file>            captions 使用的音频文件
   --model <name>            whisper 模型（默认 small）
+  --clips-dir <dir>         handoff 使用的 editor 片段目录
+  --fcpxml                  handoff 同时生成 FCPXML（字幕单独 SRT；编辑器导入待验证）
 
 示例:
   node engine/bin/linvis.mjs doctor
@@ -207,7 +220,7 @@ async function cmdInit(args) {
 async function cmdAudio(args) {
   const ref = args.flags.project ?? args._[1];
   const { dir, cfg } = loadProject(ref);
-  const recipeName = args.flags.recipe ?? 'ep01-open';
+  const recipeName = args.flags.recipe ?? cfg.audio?.recipe ?? 'ep01-open';
   const recipePath = path.join(PATHS.assets, 'recipes', `${recipeName}.json`);
   if (!fs.existsSync(recipePath)) { fail(`配方不存在: ${recipePath}`); return 2; }
 
@@ -235,7 +248,8 @@ async function cmdCaptions(args) {
   if (!fs.existsSync(audioFile)) { fail(`音频不存在: ${audioFile}`); return 2; }
 
   const model = args.flags.model ?? null;
-  const outJson = path.join(dir, 'assets', 'captions.json');
+  const outJson = args.flags.out ? path.resolve(args.flags.out) : path.join(dir, 'assets', 'captions.json');
+  if (fs.existsSync(outJson) && !args.flags.force) { fail(`字幕已存在，拒绝覆盖: ${outJson}（需 --force）`); return 2; }
 
   step(`转写: ${path.basename(audioFile)}${model ? ` (model=${model})` : ' (自动选模型)'}`);
   const tr = await import('../lib/transcribe.mjs');
@@ -347,6 +361,70 @@ async function doRender(args, mode) {
   return 0;
 }
 
+/* ---------------- scenes（逐镜头分段渲染） ---------------- */
+async function cmdScenes(args) {
+  const ref = args.flags.project ?? args._[1];
+  const { dir, cfg } = loadProject(ref);
+
+  const errors = validateProject(cfg);
+  if (errors.length) {
+    fail('工程配置校验失败:');
+    errors.forEach((e) => console.error('  - ' + e));
+    return 2;
+  }
+
+  // --scene 可重复指定，也可逗号分隔；省略则渲染全部镜头
+  const raw = args.flags.scene;
+  let only = null;
+  if (raw && raw !== true) {
+    only = String(raw).split(',').map((s) => s.trim()).filter(Boolean);
+  }
+
+  const outDir = args.flags.out ? path.resolve(args.flags.out) : null;
+  const S = await import('../lib/render-scenes.mjs');
+
+  const res = await S.renderScenes({
+    projectDir: dir,
+    cfg,
+    outDir,
+    only,
+    scale: Number(args.flags.scale ?? 1),
+    crf: Number(args.flags.crf ?? 18),
+    force: Boolean(args.flags.force),
+    onProgress: ({ scene, index, total, progress }) => {
+      const pct = Math.floor(progress * 100);
+      process.stdout.write(`\r  [${index}/${total}] ${scene} ${pct}%   `);
+    },
+  });
+  process.stdout.write('\n');
+
+  if (!res.ok) {
+    fail(res.error ?? '逐镜头渲染未产出任何片段');
+    if (res.skipped?.length) {
+      for (const s of res.skipped) console.error(`  - ${s.id}: ${s.reason}`);
+    }
+    return 1;
+  }
+
+  if (args.flags.json) {
+    jsonOut({ project: cfg.id, ...res });
+    return res.skipped.length ? 1 : 0;
+  }
+
+  for (const s of res.skipped) warn(`未产出: ${s.id} — ${s.reason}`);
+  console.log(`\n逐镜头渲染完成\n`);
+  console.log(`  输出目录  ${res.outDir}`);
+  console.log(`  片段数    ${res.clips.length}${res.skipped.length ? `（跳过 ${res.skipped.length}）` : ''}`);
+  console.log('');
+  for (const c of res.clips) {
+    const mb = c.bytes ? (c.bytes / 1024 / 1024).toFixed(2) + 'MB' : '已存在';
+    console.log(`  ${c.id.padEnd(20)} ${c.type.padEnd(16)} 帧 ${c.from}→${c.from + c.durationInFrames}  ${mb}`);
+  }
+  console.log(`\n下一步: 剪映草稿会自动引用这些片段`);
+  console.log(`  node engine/bin/linvis.mjs jianying ${cfg.id} --name <草稿名>`);
+  return res.skipped.length ? 1 : 0;
+}
+
 /* ---------------- still ---------------- */
 async function cmdStill(args) {
   const ref = args.flags.project ?? args._[1];
@@ -424,6 +502,197 @@ async function cmdInspect(args) {
   return passed === checks.length ? 0 : 1;
 }
 
+/* ---------------- jianying ---------------- */
+async function cmdJianying(args) {
+  const sub = args._[1];
+  const target = args._[2];
+
+  // jianying inspect <DraftNameOrPath> —— 质检已生成的草稿
+  if (sub === 'inspect') {
+    const ref = target ?? args.flags.name;
+    if (!ref) { fail('用法: linvis jianying inspect <草稿名或路径>'); return 2; }
+    const { inspectJianyingDraft, detectDraftRoot } = await import('../adapters/jianying/index.mjs');
+    let dir = ref;
+    if (!fs.existsSync(dir)) {
+      const root = args.flags['draft-root'] ?? detectDraftRoot();
+      if (!root) { fail('未找到剪映草稿根目录，请用 --draft-root 指定'); return 2; }
+      dir = path.join(root, ref);
+    }
+    const rep = inspectJianyingDraft(dir);
+    if (args.flags.json) { jsonOut(rep); return rep.ok ? 0 : 1; }
+    console.log(`\n草稿: ${rep.draftDir}\n`);
+    for (const c of rep.checks) console.log(`${c.pass ? '✅' : '❌'} ${c.name.padEnd(26)} ${c.detail}`);
+    for (const w of rep.warnings) console.log(`⚠️  ${w}`);
+    const pass = rep.checks.filter((c) => c.pass).length;
+    console.log(`\n通过 ${pass}/${rep.checks.length}`);
+    return rep.ok ? 0 : 1;
+  }
+
+  // jianying <project> —— 生成剪映草稿
+  const { buildJianyingDraft, detectDraftRoot, collectSceneClips } = await import('../adapters/jianying/index.mjs');
+  const { dir, cfg } = loadProject(sub);
+  const draftRoot = args.flags['draft-root'] ?? detectDraftRoot();
+  if (!draftRoot) {
+    fail('未找到剪映草稿根目录。请用 --draft-root <dir> 指定（例如 "D:/剪映/剪映草稿/JianyingPro Drafts"）');
+    return 2;
+  }
+
+  const name = args.flags.name ?? cfg.id;
+  // 逐镜头预渲片段：优先用 --scene-clips 指定，否则自动找 out/render/scenes/<id>/
+  const clipsDir = args.flags['scene-clips'] && args.flags['scene-clips'] !== true
+    ? path.resolve(args.flags['scene-clips'])
+    : null;
+  const sceneClips = args.flags['no-scene-clips'] === true
+    ? null
+    : collectSceneClips(cfg.id, { projectDir: dir, cfg, outDir: clipsDir });
+
+  const res = buildJianyingDraft({
+    projectDir: dir,
+    cfg,
+    draftRoot,
+    name,
+    skeletonDir: args.flags.skeleton,
+    sceneClips,
+    force: Boolean(args.flags.force),
+  });
+
+  if (!res.ok) { fail(res.error); return 2; }
+
+  if (args.flags.json) {
+    jsonOut({ draftRoot, name, ...res });
+    return 0;
+  }
+
+  for (const w of res.warnings) warn(w);
+  for (const n of res.notes ?? []) console.log(`ℹ️  ${n}`);
+  if (res.sceneClipsUsed?.length) {
+    console.log(`ℹ️  已接入逐镜头片段: ${res.sceneClipsUsed.join(', ')}`);
+  }
+  console.log(`\n剪映草稿已生成\n`);
+  console.log(`  草稿目录   ${res.draftDir}`);
+  console.log(`  时间线 ID  ${res.timelineId}`);
+  console.log(`  schema 骨架 ${res.skeleton}`);
+  console.log(`  骨架版本   ${res.skeletonVersion}`);
+  console.log(`  内容       ${res.bytes} 字节（明文，交给剪映加密保存）`);
+  console.log(`  轨道       ${res.tracks.map((t) => `${t.name}(${t.type}×${t.segments})`).join(' / ')}`);
+  console.log(`\n下一步: 打开剪映 → 本地草稿 → ${name}`);
+  console.log(`质检: node engine/bin/linvis.mjs jianying inspect ${name}`);
+  return 0;
+}
+
+/* ---------------- duck ---------------- */
+async function cmdDuck(args) {
+  const { duckMusic, duckProjectLayers, DEFAULT_DUCK } = await import('../lib/sidechain.mjs');
+  const { dir, cfg } = loadProject(args._[1]);
+
+  const layers = cfg.audio?.layers ?? [];
+  const outFile = args.flags.out
+    ? path.resolve(args.flags.out)
+    : path.join(dir, 'assets', `${cfg.id}-ducked.wav`);
+
+  const duck = {};
+  for (const k of ['threshold', 'ratio', 'attack', 'release', 'musicGain', 'voiceGain']) {
+    if (args.flags[k] !== undefined) duck[k] = Number(args.flags[k]);
+  }
+
+  const useProject = !args.flags.voice && !args.flags.music && layers.some((l) => l.role === 'voice') && layers.some((l) => l.role === 'music');
+
+  let res;
+  if (useProject) {
+    res = await duckProjectLayers({
+      layers,
+      assetsDir: path.join(dir, 'assets'),
+      output: outFile,
+      duck,
+      compare: Boolean(args.flags.compare),
+      force: Boolean(args.flags.force),
+    });
+  } else {
+    const voice = args.flags.voice ?? layers.find((l) => l.id === 'voice')?.src;
+    const music = args.flags.music ?? layers.find((l) => l.id === 'bgm' || l.id === 'music')?.src;
+    if (!voice || !music) {
+      fail('需要配音与音乐。可在 project.json 的 audio.layers 里标 role:"voice"/"music"，或用 --voice/--music 指定');
+      return 2;
+    }
+    const abs = (s) => (s ? (path.isAbsolute(s) ? s : path.join(dir, 'assets', s)) : null);
+    res = await duckMusic({ voice: abs(voice), music: abs(music), output: outFile, duck, compare: Boolean(args.flags.compare), force: Boolean(args.flags.force) });
+  }
+
+  if (!res.ok) { fail(res.error); return 1; }
+
+  if (args.flags.json) { jsonOut({ project: cfg.id, ...res }); return 0; }
+
+  console.log('\n侧链压缩完成\n');
+  console.log(`  输出     ${res.output}`);
+  if (res.musicOutput) console.log(`  独立音乐 ${res.musicOutput}（与人声分轨，勿再叠加混音版）`);
+  console.log(`  配音     ${res.voice.file}  ${res.voice.durationSec}s`);
+  console.log(`  音乐     ${res.music.file}  ${res.music.durationSec}s`);
+  console.log(`  参数     threshold=${res.duck.threshold} ratio=${res.duck.ratio} attack=${res.duck.attack}ms release=${res.duck.release}ms`);
+  if (res.loudness) console.log(`  响度     ${res.loudness.inputI} LUFS / TP ${res.loudness.inputTp}`);
+  if (res.compare?.file) {
+    console.log(`  A/B 对照  ${res.compare.file}（${res.compare.loudness?.inputI} LUFS，未压缩）`);
+  }
+  return 0;
+}
+
+async function cmdVoice(args) {
+  const { dir, cfg } = loadProject(args.flags.project ?? args._[1]);
+  if (!args.flags.audio) { fail('用法: linvis voice <project> --audio <录音>'); return 2; }
+  const input = path.isAbsolute(args.flags.audio) ? args.flags.audio : path.join(dir, 'assets', args.flags.audio);
+  const output = args.flags.out ? path.resolve(args.flags.out) : path.join(dir, 'assets', 'voice-clean.wav');
+  const { prepareVoice } = await import('../lib/voice.mjs');
+  const r = await prepareVoice({ input, output, targetI: Number(args.flags['target-i'] ?? -18), force: Boolean(args.flags.force) });
+  jsonOut({ project: cfg.id, ...r });
+  return 0;
+}
+
+async function cmdHandoff(args) {
+  const { dir, cfg } = loadProject(args.flags.project ?? args._[1]);
+  const { buildHandoff } = await import('../lib/handoff.mjs');
+  const outDir = args.flags.out ? path.resolve(args.flags.out) : path.join(PATHS.out, 'handoff', cfg.id);
+  const sceneClipsDir = args.flags['clips-dir'] ? path.resolve(args.flags['clips-dir']) : path.join(PATHS.render, 'scenes', cfg.id);
+  const r = await buildHandoff({ projectDir: dir, cfg, outDir, force: Boolean(args.flags.force), sceneClipsDir });
+  if (args.flags.fcpxml) {
+    const { timelineToFcpxml } = await import('../lib/fcpxml.mjs');
+    const xml = timelineToFcpxml(r.timeline, { name: cfg.title ?? cfg.id, baseDir: outDir });
+    const file = path.join(outDir, 'timeline.fcpxml');
+    fs.writeFileSync(file, xml, { flag: args.flags.force ? 'w' : 'wx' });
+    r.fcpxml = { file, editorImport: 'not-verified', captions: 'captions.srt', fades: 'metadata-only', relocation: 'regenerate-after-moving' };
+  }
+  jsonOut(r);
+  return r.ok === false ? 1 : 0;
+}
+
+async function cmdOpenChatCut(args) {
+  const OCC = await import('../adapters/openchatcut/index.mjs');
+  const action = args._[1];
+  const clientOptions = {};
+  if (args.flags.endpoint) clientOptions.endpoint = args.flags.endpoint;
+  let result;
+  if (action === 'status') result = await OCC.status(clientOptions);
+  else if (action === 'inspect') result = await OCC.inspectProject(args.flags['editor-project'], clientOptions, args.flags.timeline);
+  else if (action === 'verify') result = await OCC.verifyPackage({ packageDir: args.flags.package, projectId: args.flags['editor-project'], clientOptions, timelineId: args.flags.timeline });
+  else if (action === 'self-test') result = await OCC.selfTest(clientOptions);
+  else if (action === 'push') {
+    const { cfg } = loadProject(args._[2]);
+    const packageDir = args.flags.package;
+    if (!packageDir || !args.flags['editor-project'] || !args.flags.name) {
+      fail('push 需要工程名、--package、--editor-project、--name；总是新建序列，不覆盖现有序列');
+      return 2;
+    }
+    const pkg = OCC.readPackage(packageDir);
+    if (pkg.manifest.projectId !== cfg.id || JSON.stringify(pkg.timeline.video) !== JSON.stringify(cfg.video)) {
+      fail('交接包与工程标识/视频参数不一致，请重新 handoff'); return 2;
+    }
+    const receiptFile = path.join(PATHS.out, 'logs', `${Date.now()}-openchatcut-receipt.json`);
+    info(`OpenChatCut 操作回执: ${receiptFile}`);
+    result = await OCC.pushPackage({ packageDir, projectId: args.flags['editor-project'], name: args.flags.name, clientOptions,
+      onReceipt: (r) => fs.writeFileSync(receiptFile, JSON.stringify(r, null, 2) + '\n') });
+  } else { fail('openchatcut 子命令: status | self-test | inspect | verify | push'); return 2; }
+  jsonOut(result);
+  return result.ok === false ? 1 : 0;
+}
+
 /* ---------------- main ---------------- */
 async function main() {
   const args = parseArgs(process.argv.slice(2));
@@ -432,7 +701,8 @@ async function main() {
   if (!cmd || cmd === 'help' || args.flags.help) { console.log(HELP); return 0; }
 
   ensureDirs();
-  startLog(cmd, process.argv.slice(3));
+  const logArgs = process.argv.slice(3).map((arg, i, all) => all[i - 1] === '--endpoint' ? '[LOCAL_ENDPOINT]' : arg.startsWith('--endpoint=') ? '--endpoint=[LOCAL_ENDPOINT]' : arg);
+  startLog(cmd, logArgs);
 
   try {
     switch (cmd) {
@@ -449,8 +719,14 @@ async function main() {
       case 'captions': return await cmdCaptions(args);
       case 'preview': return await doRender(args, 'preview');
       case 'render': return await doRender(args, 'render');
+      case 'scenes': return await cmdScenes(args);
       case 'still': return await cmdStill(args);
       case 'inspect': return await cmdInspect(args);
+      case 'jianying': return await cmdJianying(args);
+      case 'duck': return await cmdDuck(args);
+      case 'voice': return await cmdVoice(args);
+      case 'handoff': return await cmdHandoff(args);
+      case 'openchatcut': return await cmdOpenChatCut(args);
       default:
         fail(`未知命令: ${cmd}`);
         console.log(HELP);

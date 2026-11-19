@@ -4,6 +4,7 @@
  */
 import path from 'node:path';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import { createRequire } from 'node:module';
 import { PATHS, ensureDirs } from './project.mjs';
 import { step, info, warn, logLine } from './log.mjs';
@@ -155,9 +156,10 @@ export function buildInputProps(projectDir, cfg) {
       // 每个工程独立子目录，避免多工程同名素材互相覆盖
       const publicDir = path.join(PATHS.video, 'public', '_project', cfg.id);
       fs.mkdirSync(publicDir, { recursive: true });
-      const name = path.basename(abs);
+      const digest = crypto.createHash('sha256').update(fs.readFileSync(abs)).digest('hex').slice(0, 16);
+      const name = `${digest}-${path.basename(abs)}`;
       const dest = path.join(publicDir, name);
-      if (!fs.existsSync(dest) || fs.statSync(dest).mtimeMs < fs.statSync(abs).mtimeMs) {
+      if (!fs.existsSync(dest)) {
         fs.copyFileSync(abs, dest);
         logLine(`asset copy ${abs} -> ${dest}`);
       }
@@ -170,6 +172,7 @@ export function buildInputProps(projectDir, cfg) {
   const scenes = (cfg.scenes || []).map((s) => {
     const props = { ...(s.props || {}) };
     if (props.src) props.src = toSrc(props.src);
+    if (props.image) props.image = toSrc(props.image);
     return { ...s, props };
   });
 
@@ -208,5 +211,6 @@ export function buildInputProps(projectDir, cfg) {
     scenes,
     audio: { layers },
     captions,
+    renderMode: cfg.renderMode ?? 'delivery',
   };
 }

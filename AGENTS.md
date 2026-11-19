@@ -43,6 +43,7 @@ Agent 平台（Cindy/Codex/DSH）只是「调用方」，通过 shell 执行同�
 | 路径 | 职责 | 谁可以改 |
 |---|---|---|
 | `engine/` | 平台无关 CLI 与渲染引擎 | 开发者 |
+| `engine/adapters/jianying/` | 剪映草稿适配器（project.json → 剪映原生草稿） | 开发者 |
 | `video/` | Remotion 渲染源工程（React 组件 = 镜头模板） | 开发者 |
 | `projects/<id>/project.json` | 单个视频的**唯一**配置源 | Agent / 用户 |
 | `projects/<id>/assets/` | 该工程私有素材（图片、配音、字幕、生成音频） | Agent / 用户 |
@@ -65,8 +66,12 @@ node engine/bin/linvis.mjs audio <project>               # 程序化生成 BGM/S
 node engine/bin/linvis.mjs captions <project> --audio <wav>  # 转写生成字幕
 node engine/bin/linvis.mjs preview <project>             # 低成本预览（1/2 分辨率）
 node engine/bin/linvis.mjs render <project>              # 完整渲染 1080x1920
+node engine/bin/linvis.mjs scenes <project>              # 逐镜头分段渲染（供剪映逐轨编辑）
 node engine/bin/linvis.mjs still <project> --frame 60    # 单帧导出（调试）
 node engine/bin/linvis.mjs inspect <project>             # 输出质量质检
+node engine/bin/linvis.mjs jianying <project> --name <n> # 生成剪映原生可编辑草稿
+node engine/bin/linvis.mjs jianying inspect <n>          # 检查剪映草稿完整性
+node engine/bin/linvis.mjs duck <project> --compare      # 配音侧链压缩 BGM
 ```
 
 通用参数：`--project <path>`、`--json`（机器可读输出）、`--force`（覆盖输出）。
@@ -84,6 +89,7 @@ node engine/bin/linvis.mjs inspect <project>             # 输出质量质检
 - `video`: `width`(1080) / `height`(1920) / `fps`(30) / `durationInFrames` / `backgroundColor`
 - `scenes[]`: 每个镜头有 `id`、`type`、`from`、`durationInFrames` 与类型专属 props
 - `audio.layers[]`: `{ id, src, from, volume, fadeInFrames, fadeOutFrames }`
+  - 可选 `role`: `"voice"` / `"music"`，`duck` 命令靠它识别配音与 BGM
 - `captions`: `{ enabled, src, style }`
 
 **修改一个镜头 = 只改 `scenes[]` 里对应那一项的 props，然后重跑 `render`。**
@@ -136,6 +142,7 @@ node engine/bin/linvis.mjs inspect <project>             # 输出质量质检
 | Cindy + Pi Harness | **已实测** | `node tools/verify-pi-skill.mjs` 解析 Pi 真实启动注入的 system prompt，确认 `linvis-video` Skill 与 `AGENTS.md` 全文均被注入 |
 | Cindy 设置页可见性 | **已实测** | 已在 `~/.agents/skills/` 与 `~/.claude/skills/` 建 Junction 指向项目内唯一源文件；在非项目目录下 Pi 仍能发现该 Skill |
 | 独立命令行 | **已实测** | `scripts/render-standalone.cmd` 清除所有 Agent 环境变量后完整跑通 doctor→audio→render→inspect |
+| 剪映原生草稿（11.7.0.14652） | **已实测** | 明文 `draft_content.json` + 本机骨架；剪映实际打开、显示 5 条轨道、接管加密保存。详见 `docs/V1.1-TEST-REPORT.md` |
 | Codex | **待验证** | 已提供 `AGENTS.md` + `.codex/README.md`；Codex 遵循同一 `AGENTS.md` 约定，但未做真实 Codex 会话验证 |
 | DSH | **待验证** | 已提供 `.dsh/skills/linvis-video.md` 指针；未在 DSH 0.2.1-rc.5 中做真实 Skill 加载验证 |
 

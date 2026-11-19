@@ -1,0 +1,269 @@
+{
+  "ok": true,
+  "engine": "openai-whisper",
+  "model": "small",
+  "device": "cpu",
+  "computeType": "fp32",
+  "language": "zh",
+  "languageProb": null,
+  "durationSec": 9.96,
+  "fps": 30,
+  "captions": [
+    {
+      "from": 0,
+      "to": 183,
+      "fromSec": 0,
+      "toSec": 6.1,
+      "text": "人工智能不只会聊天,他还能自己写代码,自己剪辑视频。"
+    },
+    {
+      "from": 210,
+      "to": 299,
+      "fromSec": 7,
+      "toSec": 9.96,
+      "text": "今天我们来看看他是怎么做到的。"
+    }
+  ],
+  "words": [
+    {
+      "text": "人",
+      "from": 0,
+      "to": 11,
+      "fromSec": 0,
+      "toSec": 0.38,
+      "prob": 0.9332
+    },
+    {
+      "text": "工",
+      "from": 11,
+      "to": 18,
+      "fromSec": 0.38,
+      "toSec": 0.6,
+      "prob": 0.9944
+    },
+    {
+      "text": "智",
+      "from": 18,
+      "to": 22,
+      "fromSec": 0.6,
+      "toSec": 0.74,
+      "prob": 0.9967
+    },
+    {
+      "text": "能",
+      "from": 22,
+      "to": 30,
+      "fromSec": 0.74,
+      "toSec": 1,
+      "prob": 0.9666
+    },
+    {
+      "text": "不",
+      "from": 30,
+      "to": 36,
+      "fromSec": 1,
+      "toSec": 1.2,
+      "prob": 0.9915
+    },
+    {
+      "text": "只",
+      "from": 36,
+      "to": 42,
+      "fromSec": 1.2,
+      "toSec": 1.4,
+      "prob": 0.8757
+    },
+    {
+      "text": "会",
+      "from": 42,
+      "to": 48,
+      "fromSec": 1.4,
+      "toSec": 1.6,
+      "prob": 0.6647
+    },
+    {
+      "text": "聊",
+      "from": 48,
+      "to": 53,
+      "fromSec": 1.6,
+      "toSec": 1.78,
+      "prob": 0.9966
+    },
+    {
+      "text": "天,",
+      "from": 53,
+      "to": 66,
+      "fromSec": 1.78,
+      "toSec": 2.2,
+      "prob": 0.9998
+    },
+    {
+      "text": "他",
+      "from": 77,
+      "to": 82,
+      "fromSec": 2.56,
+      "toSec": 2.72,
+      "prob": 0.5494
+    },
+    {
+      "text": "还",
+      "from": 82,
+      "to": 89,
+      "fromSec": 2.72,
+      "toSec": 2.98,
+      "prob": 0.981
+    },
+    {
+      "text": "能",
+      "from": 89,
+      "to": 96,
+      "fromSec": 2.98,
+      "toSec": 3.2,
+      "prob": 0.9925
+    },
+    {
+      "text": "自己",
+      "from": 96,
+      "to": 106,
+      "fromSec": 3.2,
+      "toSec": 3.54,
+      "prob": 0.996
+    },
+    {
+      "text": "写",
+      "from": 106,
+      "to": 115,
+      "fromSec": 3.54,
+      "toSec": 3.82,
+      "prob": 0.9972
+    },
+    {
+      "text": "代",
+      "from": 115,
+      "to": 124,
+      "fromSec": 3.82,
+      "toSec": 4.12,
+      "prob": 0.9886
+    },
+    {
+      "text": "码,",
+      "from": 124,
+      "to": 129,
+      "fromSec": 4.12,
+      "toSec": 4.3,
+      "prob": 0.9965
+    },
+    {
+      "text": "自己",
+      "from": 143,
+      "to": 153,
+      "fromSec": 4.78,
+      "toSec": 5.1,
+      "prob": 0.9905
+    },
+    {
+      "text": "剪",
+      "from": 153,
+      "to": 160,
+      "fromSec": 5.1,
+      "toSec": 5.32,
+      "prob": 0.9636
+    },
+    {
+      "text": "辑",
+      "from": 160,
+      "to": 168,
+      "fromSec": 5.32,
+      "toSec": 5.6,
+      "prob": 0.9355
+    },
+    {
+      "text": "视",
+      "from": 168,
+      "to": 175,
+      "fromSec": 5.6,
+      "toSec": 5.82,
+      "prob": 0.9976
+    },
+    {
+      "text": "频。",
+      "from": 175,
+      "to": 183,
+      "fromSec": 5.82,
+      "toSec": 6.1,
+      "prob": 0.9981
+    },
+    {
+      "text": "今天",
+      "from": 210,
+      "to": 223,
+      "fromSec": 7,
+      "toSec": 7.42,
+      "prob": 0.984
+    },
+    {
+      "text": "我们",
+      "from": 223,
+      "to": 235,
+      "fromSec": 7.42,
+      "toSec": 7.82,
+      "prob": 0.9812
+    },
+    {
+      "text": "来",
+      "from": 235,
+      "to": 243,
+      "fromSec": 7.82,
+      "toSec": 8.1,
+      "prob": 0.996
+    },
+    {
+      "text": "看看",
+      "from": 243,
+      "to": 253,
+      "fromSec": 8.1,
+      "toSec": 8.44,
+      "prob": 0.9856
+    },
+    {
+      "text": "他是",
+      "from": 253,
+      "to": 268,
+      "fromSec": 8.44,
+      "toSec": 8.94,
+      "prob": 0.8819
+    },
+    {
+      "text": "怎么",
+      "from": 268,
+      "to": 280,
+      "fromSec": 8.94,
+      "toSec": 9.32,
+      "prob": 0.9499
+    },
+    {
+      "text": "做",
+      "from": 280,
+      "to": 287,
+      "fromSec": 9.32,
+      "toSec": 9.56,
+      "prob": 0.9979
+    },
+    {
+      "text": "到",
+      "from": 287,
+      "to": 293,
+      "fromSec": 9.56,
+      "toSec": 9.76,
+      "prob": 0.9786
+    },
+    {
+      "text": "的。",
+      "from": 293,
+      "to": 299,
+      "fromSec": 9.76,
+      "toSec": 9.96,
+      "prob": 0.9987
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Easing } from 'remotion';
-import { FilmGrain, ScanlinesVignette } from '../components/primitives';
+import { FilmGrain, ScanlinesVignette, FittedText } from '../components/primitives';
 
 export type Caption = { from: number; to: number; text: string };
 export type WordTiming = { text: string; from: number; to: number };
@@ -20,6 +20,8 @@ export type VoiceCaptionProps = {
   bottom?: number;
   /** 说话人标签 */
   speaker?: string;
+  /** Disable transcription only; keep headline and background animation. */
+  showCaptions?: boolean;
 };
 
 /**
@@ -36,6 +38,7 @@ export const VoiceCaption: React.FC<VoiceCaptionProps> = ({
   fontSize = 54,
   bottom = 260,
   speaker,
+  showCaptions = true,
 }) => {
   const frame = useCurrentFrame();
   const { width } = useVideoConfig();
@@ -64,25 +67,14 @@ export const VoiceCaption: React.FC<VoiceCaptionProps> = ({
 
       {headline && (
         <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', padding: '0 90px' }}>
-          <div
-            style={{
-              fontFamily,
-              fontSize: 76,
-              fontWeight: 800,
-              color: 'rgba(255,255,255,0.92)',
-              textAlign: 'center',
-              opacity: headP * 0.9,
-              lineHeight: 1.3,
-              letterSpacing: 2,
-            }}
-          >
-            {headline}
-          </div>
+          <FittedText text={headline} maxWidth={width - 180} maxHeight={420} maxSize={76} minSize={20}
+            family={fontFamily} color="rgba(255,255,255,0.92)" weight={800}
+            lineHeight={1.3} style={{ opacity: headP * 0.9 }} />
         </AbsoluteFill>
       )}
 
       {/* 字幕轨 */}
-      <AbsoluteFill style={{ justifyContent: 'flex-end', alignItems: 'center', paddingBottom: bottom }}>
+      {showCaptions && <AbsoluteFill style={{ justifyContent: 'flex-end', alignItems: 'center', paddingBottom: bottom }}>
         <div
           style={{
             maxWidth: width - 120,
@@ -129,7 +121,7 @@ export const VoiceCaption: React.FC<VoiceCaptionProps> = ({
             </div>
           ) : null}
         </div>
-      </AbsoluteFill>
+      </AbsoluteFill>}
 
       <ScanlinesVignette vignette={0.7} />
       <FilmGrain opacity={0.04} seed={29} />

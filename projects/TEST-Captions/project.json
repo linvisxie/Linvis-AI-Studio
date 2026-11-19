@@ -34,9 +34,18 @@
     "layers": [
       {
         "id": "voice",
-        "src": "PLACEHOLDER-voice-en.wav",
+        "role": "voice",
+        "src": "PLACEHOLDER-voice-zh.wav",
         "from": 0,
         "volume": 1.0,
+        "placeholder": true
+      },
+      {
+        "id": "bgm",
+        "role": "music",
+        "src": "PLACEHOLDER-voice-zh.wav",
+        "from": 0,
+        "volume": 0.25,
         "placeholder": true
       }
     ]
@@ -44,7 +53,12 @@
   "captions": {
     "enabled": true,
     "src": "captions.json",
-    "style": { "fontSize": 50, "bottom": 300, "color": "#ffffff", "highlight": "#00e5ff" }
+    "style": {
+      "fontSize": 50,
+      "bottom": 300,
+      "color": "#ffffff",
+      "highlight": "#00e5ff"
+    }
   },
   "licenses": [
     {

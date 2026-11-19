@@ -29,24 +29,58 @@ def log(msg):
 def try_faster_whisper(args, fps):
     from faster_whisper import WhisperModel
 
-    device, compute = "cpu", "int8"
+    # GPU 优先，但 CUDA 运行时缺失（本机常见：没有 cuBLAS DLL）时
+    # 必须回退 CPU，而不是让整个引擎失败。之前就是这样白白降级到 openai-whisper。
+    attempts = [("cpu", "int8")]
     try:
         import ctranslate2
         if ctranslate2.get_cuda_device_count() > 0:
-            device, compute = "cuda", "float16"
+            attempts.insert(0, ("cuda", "float16"))
     except Exception:
         pass
 
-    model = WhisperModel(args.model, device=device, compute_type=compute)
-    segments, info = model.transcribe(
-        args.audio,
-        language=None if args.language == "auto" else args.language,
-        word_timestamps=True,
-        vad_filter=True,
-        vad_parameters={"min_silence_duration_ms": 300},
-        beam_size=5,
-        initial_prompt=args.initial_prompt,
-    )
+    model = None
+    device, compute = attempts[-1]
+    last_err = None
+    for dev, ct in attempts:
+        try:
+            model = WhisperModel(args.model, device=dev, compute_type=ct)
+            device, compute = dev, ct
+            break
+        except Exception as e:
+            last_err = e
+            log(f"faster-whisper {dev}/{ct} 不可用: {e}")
+    if model is None:
+        raise last_err or RuntimeError("faster-whisper 初始化失败")
+
+    # 注意两个坑：
+    #   1. cublas 缺失的报错不在构造 WhisperModel 时抛，而是首次真正计算时
+    #   2. model.transcribe() 返回的是惰性生成器，异常在「迭代时」才抛出
+    # 所以必须把迭代包进 try，否则 CPU 回退永远跑不到。
+    def run_transcribe(md, dev, ct):
+        segs, inf = md.transcribe(
+            args.audio,
+            language=None if args.language == "auto" else args.language,
+            word_timestamps=True,
+            vad_filter=True,
+            vad_parameters={"min_silence_duration_ms": 300},
+            beam_size=5,
+            initial_prompt=args.initial_prompt,
+        )
+        # 强制物化，把惰性异常拉到当前 try 里
+        return list(segs), inf
+
+    try:
+        segs_list, info = run_transcribe(model, device, compute)
+    except Exception as e:
+        if device == "cpu":
+            raise
+        log(f"faster-whisper {device} 计算失败，回退 cpu: {e}")
+        model = WhisperModel(args.model, device="cpu", compute_type="int8")
+        device, compute = "cpu", "int8"
+        segs_list, info = run_transcribe(model, device, compute)
+
+    segments = segs_list
 
     captions, words = [], []
     for seg in segments:
