@@ -1,32 +1,234 @@
 {
   "$schema": "../../engine/schema/project.schema.json",
   "id": "RealVoice-42s-20261106-1214",
-  "title": "AI 越来越像人？｜真人录音 42 秒样片",
-  "description": "以用户41.68秒录音和faster-whisper small真实时间轴编排；42秒9:16动态图形样片，结尾仅呈现录音中的提问，不虚构后续论证。无BGM，无合成音，无外部素材；纯人声无需音乐侧链。源音频逐字节复制，render执行EBU R128归一。",
-  "placeholder": false,
-  "video": {"width":1080,"height":1920,"fps":30,"durationInFrames":1260,"backgroundColor":"#04060b"},
-  "theme": {"accent":"#70e1d5","accentAlt":"#e8b773","ink":"#f1f5f7"},
+  "title": "42 秒真人录音样片（结构模板）",
+  "description": "真人录音驱动的 42 秒竖屏样片结构模板。个人录音与转写不在仓库中；使用前请自备录音并运行 linvis voice / captions。",
+  "placeholder": true,
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationInFrames": 1260,
+    "backgroundColor": "#04060b"
+  },
+  "theme": {
+    "accent": "#70e1d5",
+    "accentAlt": "#e8b773",
+    "ink": "#f1f5f7"
+  },
   "scenes": [
-    {"id":"01-online","type":"cold-open","from":0,"durationInFrames":46,"props":{"hud":"LINVIS / FIELD NOTES 001","whisper":"当 AI 越来越像人"}},
-    {"id":"02-headline","type":"impact-title","from":46,"durationInFrames":74,"props":{"kicker":"一种越来越常见的论调","text":"AI 要取代人类了","tag":"能力在增加，问题也在浮现","hitFrame":0,"fontSize":124}},
-    {"id":"03-capabilities","type":"text-lines","from":120,"durationInFrames":99,"props":{"lines":[{"text":"01 / 能力清单","size":30,"color":"#70e1d5"},{"text":"写诗 · 编程","size":100},{"text":"考试 · 画图","size":100}],"stagger":34,"align":"left","highlightLine":2}},
-    {"id":"04-creative-signal","type":"shape-motion","from":219,"durationInFrames":72,"props":{"shape":"bars","density":15,"label":"音乐 × 视频","caption":"创作的边界，继续扩展"}},
-    {"id":"05-chat","type":"shape-motion","from":291,"durationInFrames":62,"props":{"shape":"rings","density":12,"spin":3,"label":"对话","caption":"从聊天开始"}},
-    {"id":"06-task-network","type":"shape-motion","from":353,"durationInFrames":86,"props":{"shape":"nodes","density":22,"label":"复杂任务","caption":"从回答，到协助完成"}},
-    {"id":"07-expanding","type":"shape-motion","from":439,"durationInFrames":112,"props":{"shape":"circuit","density":14,"label":"超出想象","caption":"能力边界持续延伸"}},
-    {"id":"08-public-claim","type":"text-lines","from":551,"durationInFrames":152,"props":{"lines":[{"text":"02 / 与此同时","size":30,"color":"#70e1d5"},{"text":"能力越来越强","size":86},{"text":"＝ 取代人类？","size":90,"color":"#e8b773"}],"stagger":40,"align":"left"}},
-    {"id":"09-shared-assumption","type":"shape-motion","from":703,"durationInFrames":89,"props":{"shape":"nodes","density":16,"label":"共同的判断","caption":"这些论调背后的连接点"}},
-    {"id":"10-human-capabilities","type":"shape-motion","from":792,"durationInFrames":138,"props":{"shape":"rings","density":15,"spin":2,"label":"人类的能力","caption":"人工智能正在获得越来越多"}},
-    {"id":"11-perception","type":"text-lines","from":930,"durationInFrames":143,"props":{"lines":[{"text":"03 / 从能力到感受","size":30,"color":"#70e1d5"},{"text":"会做的事更多","size":82},{"text":"看起来更像人","size":90,"color":"#e8b773"}],"stagger":30,"align":"left"}},
-    {"id":"12-pivot","type":"cold-open","from":1073,"durationInFrames":55,"props":{"hud":"QUESTION / 001","whisper":"但我想问一个问题"}},
-    {"id":"13-real-question","type":"reveal-question","from":1128,"durationInFrames":132,"props":{"kicker":"AI 越来越像人","question":"究竟凭什么","sublines":["能力的增长，意味着什么"],"fontSize":126}}
+    {
+      "id": "01-online",
+      "type": "cold-open",
+      "from": 0,
+      "durationInFrames": 46,
+      "props": {
+        "hud": "LINVIS / FIELD NOTES 001",
+        "whisper": "当 示例提问"
+      }
+    },
+    {
+      "id": "02-headline",
+      "type": "impact-title",
+      "from": 46,
+      "durationInFrames": 74,
+      "props": {
+        "kicker": "示例小标题",
+        "text": "示例标题",
+        "tag": "示例副标题",
+        "hitFrame": 0,
+        "fontSize": 124
+      }
+    },
+    {
+      "id": "03-capabilities",
+      "type": "text-lines",
+      "from": 120,
+      "durationInFrames": 99,
+      "props": {
+        "lines": [
+          {
+            "text": "01 / 能力清单",
+            "size": 30,
+            "color": "#70e1d5"
+          },
+          {
+            "text": "示例能力 A",
+            "size": 100
+          },
+          {
+            "text": "示例能力 B",
+            "size": 100
+          }
+        ],
+        "stagger": 34,
+        "align": "left",
+        "highlightLine": 2
+      }
+    },
+    {
+      "id": "04-creative-signal",
+      "type": "shape-motion",
+      "from": 219,
+      "durationInFrames": 72,
+      "props": {
+        "shape": "bars",
+        "density": 15,
+        "label": "音乐 × 视频",
+        "caption": "创作的边界，继续扩展"
+      }
+    },
+    {
+      "id": "05-chat",
+      "type": "shape-motion",
+      "from": 291,
+      "durationInFrames": 62,
+      "props": {
+        "shape": "rings",
+        "density": 12,
+        "spin": 3,
+        "label": "对话",
+        "caption": "从聊天开始"
+      }
+    },
+    {
+      "id": "06-task-network",
+      "type": "shape-motion",
+      "from": 353,
+      "durationInFrames": 86,
+      "props": {
+        "shape": "nodes",
+        "density": 22,
+        "label": "复杂任务",
+        "caption": "从回答，到协助完成"
+      }
+    },
+    {
+      "id": "07-expanding",
+      "type": "shape-motion",
+      "from": 439,
+      "durationInFrames": 112,
+      "props": {
+        "shape": "circuit",
+        "density": 14,
+        "label": "超出想象",
+        "caption": "能力边界持续延伸"
+      }
+    },
+    {
+      "id": "08-public-claim",
+      "type": "text-lines",
+      "from": 551,
+      "durationInFrames": 152,
+      "props": {
+        "lines": [
+          {
+            "text": "02 / 与此同时",
+            "size": 30,
+            "color": "#70e1d5"
+          },
+          {
+            "text": "示例论点",
+            "size": 86
+          },
+          {
+            "text": "＝ 示例结论？",
+            "size": 90,
+            "color": "#e8b773"
+          }
+        ],
+        "stagger": 40,
+        "align": "left"
+      }
+    },
+    {
+      "id": "09-shared-assumption",
+      "type": "shape-motion",
+      "from": 703,
+      "durationInFrames": 89,
+      "props": {
+        "shape": "nodes",
+        "density": 16,
+        "label": "示例标签",
+        "caption": "这些论调背后的连接点"
+      }
+    },
+    {
+      "id": "10-human-capabilities",
+      "type": "shape-motion",
+      "from": 792,
+      "durationInFrames": 138,
+      "props": {
+        "shape": "rings",
+        "density": 15,
+        "spin": 2,
+        "label": "示例标签",
+        "caption": "人工智能正在获得越来越多"
+      }
+    },
+    {
+      "id": "11-perception",
+      "type": "text-lines",
+      "from": 930,
+      "durationInFrames": 143,
+      "props": {
+        "lines": [
+          {
+            "text": "03 / 从能力到感受",
+            "size": 30,
+            "color": "#70e1d5"
+          },
+          {
+            "text": "示例描述 A",
+            "size": 82
+          },
+          {
+            "text": "示例描述 B",
+            "size": 90,
+            "color": "#e8b773"
+          }
+        ],
+        "stagger": 30,
+        "align": "left"
+      }
+    },
+    {
+      "id": "12-pivot",
+      "type": "cold-open",
+      "from": 1073,
+      "durationInFrames": 55,
+      "props": {
+        "hud": "QUESTION / 001",
+        "whisper": "示例过渡语"
+      }
+    },
+    {
+      "id": "13-real-question",
+      "type": "reveal-question",
+      "from": 1128,
+      "durationInFrames": 132,
+      "props": {
+        "kicker": "示例提问",
+        "question": "示例问题",
+        "sublines": [
+          "示例子句"
+        ],
+        "fontSize": 126
+      }
+    }
   ],
-  "audio": {"layers":[{"id":"voice","role":"voice","src":"user-original.m4a","from":0,"volume":1,"fadeInFrames":0,"fadeOutFrames":0,"placeholder":false}]},
-  "captions": {"enabled":true,"src":"captions.json"},
+  "audio": {
+    "layers": []
+  },
+  "captions": {
+    "enabled": false,
+    "src": "captions.json"
+  },
   "licenses": [
-    {"asset":"user-original.m4a","license":"用户提供真人录音，仅按本次授权用于制作样片；权利归原权利人，不作CC0声明","source":"用户上传：3c185dd5-104b-4065-bd43-541543a8f2b1-1793966651222.m4a","note":"源与工程副本SHA256同为f92578b6ecd114b59b72c09e490622059829d83adbae04dc19ba22d3a0df8451；未改变源文件。"},
-    {"asset":"captions.json","license":"用户录音的本地机器转写派生字幕","source":"linvis captions / faster-whisper small / CPU int8","note":"保留原始转写captions-asr-original.json；仅将指代AI的同音他改为它并加枚举标点。未人工逐字听审。"},
-    {"asset":"procedural-graphics","license":"仓库现有scene组件程序化生成，无外部图片、视频或音频素材","source":"Linvis现有cold-open/impact-title/text-lines/shape-motion/reveal-question"},
-    {"asset":"NotoSansSC-VF.ttf","license":"SIL Open Font License 1.1","source":"仓库自带Noto Sans SC字体"}
+    {
+      "asset": "procedural-graphics",
+      "license": "仓库 scene 组件程序化生成，无外部素材",
+      "source": "Linvis cold-open/impact-title/text-lines/shape-motion/reveal-question"
+    }
   ]
 }

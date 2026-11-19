@@ -1,8 +1,8 @@
 {
   "$schema": "../../engine/schema/project.schema.json",
   "id": "EP01-TechPhilosophy-Act1-v2",
-  "title": "EP01 · AI 究竟凭什么越来越像人？｜第一幕试录精修",
-  "description": "八幕完整稿件仅第一幕有真人试录，交付42秒第一幕，不以合成声音补足后七幕。视觉：科技×哲学，黑曜石、暖白、琥珀与青绿。",
+  "title": "EP01 · 科技与哲学竖屏样片（结构模板）",
+  "description": "科技×哲学竖屏视觉模板。个人口播录音、稿件原文与生成配图不在仓库中；如需复现请自行提供素材并在 licenses[] 登记。",
   "video": {
     "width": 1080,
     "height": 1920,
@@ -23,14 +23,10 @@
       "durationInFrames": 120,
       "props": {
         "variant": "question",
-        "src": "dog-opening.png",
-        "imageOpacity": 0.88,
-        "kicker": "LINVIS / EP.01",
-        "title": "AI 要取代人类了？",
-        "subtitle": "先别急着回答。",
-        "labels": [
-          "TECHNOLOGY × PHILOSOPHY"
-        ]
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s01-dog]",
+        "subtitle": "（文案由使用者填写）",
+        "labels": []
       }
     },
     {
@@ -40,17 +36,10 @@
       "durationInFrames": 171,
       "props": {
         "variant": "capability-grid",
-        "kicker": "01 / 能力正在扩张",
-        "title": "它开始做更多事",
-        "subtitle": "语言 · 逻辑 · 图像 · 声音",
-        "labels": [
-          "写诗",
-          "编程",
-          "考试",
-          "画图",
-          "音乐",
-          "视频"
-        ]
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s02-capabilities]",
+        "subtitle": "（文案由使用者填写）",
+        "labels": []
       }
     },
     {
@@ -60,15 +49,10 @@
       "durationInFrames": 148,
       "props": {
         "variant": "glass-box",
-        "kicker": "从「回答」到「执行」",
-        "title": "不只是一个聊天框",
-        "subtitle": "回应问题 → 拆解任务 → 调用工具",
-        "labels": [
-          "目标",
-          "工具",
-          "执行",
-          "反馈"
-        ]
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s03-chatbox]",
+        "subtitle": "（文案由使用者填写）",
+        "labels": []
       }
     },
     {
@@ -78,15 +62,10 @@
       "durationInFrames": 112,
       "props": {
         "variant": "human-network",
-        "kicker": "02 / 能力边界",
-        "title": "想象的边界在移动",
-        "subtitle": "不是一个技能，而是一组连接。",
-        "labels": [
-          "语言",
-          "推理",
-          "创作",
-          "行动"
-        ]
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s04-network]",
+        "subtitle": "（文案由使用者填写）",
+        "labels": []
       }
     },
     {
@@ -96,15 +75,10 @@
       "durationInFrames": 152,
       "props": {
         "variant": "capability-grid",
-        "kicker": "一种越来越常见的论调",
-        "title": "「取代人类」",
-        "subtitle": "当能力被不断叠加，判断也随之放大。",
-        "labels": [
-          "更快",
-          "更多",
-          "更强",
-          "然后呢？"
-        ]
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s05-rhetoric]",
+        "subtitle": "（文案由使用者填写）",
+        "labels": []
       }
     },
     {
@@ -114,15 +88,10 @@
       "durationInFrames": 89,
       "props": {
         "variant": "glass-box",
-        "kicker": "拆开这个判断",
-        "title": "背后有一个共同前提",
-        "subtitle": "人类的能力，正在被系统逐项实现。",
-        "labels": [
-          "能力",
-          "比较",
-          "感受",
-          "判断"
-        ]
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s06-judgment]",
+        "subtitle": "（文案由使用者填写）",
+        "labels": []
       }
     },
     {
@@ -132,15 +101,10 @@
       "durationInFrames": 138,
       "props": {
         "variant": "human-network",
-        "kicker": "原本属于人的能力",
-        "title": "边界，正在重画",
-        "subtitle": "创作 / 推理 / 规划 / 表达",
-        "labels": [
-          "创作",
-          "推理",
-          "规划",
-          "表达"
-        ]
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s07-human-abilities]",
+        "subtitle": "（文案由使用者填写）",
+        "labels": []
       }
     },
     {
@@ -150,11 +114,9 @@
       "durationInFrames": 143,
       "props": {
         "variant": "question",
-        "src": "human-machine.png",
-        "imageOpacity": 0.9,
-        "kicker": "我们开始觉得",
-        "title": "AI 越来越像人",
-        "subtitle": "这是一种感受，还是一个解释？",
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s08-mirror]",
+        "subtitle": "（文案由使用者填写）",
         "labels": []
       }
     },
@@ -165,9 +127,9 @@
       "durationInFrames": 55,
       "props": {
         "variant": "question",
-        "kicker": "先停一下。",
-        "title": "但我想问——",
-        "subtitle": "",
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s09-pause]",
+        "subtitle": "（文案由使用者填写）",
         "labels": []
       }
     },
@@ -178,31 +140,16 @@
       "durationInFrames": 132,
       "props": {
         "variant": "human-network",
-        "kicker": "第一幕 / 问题成立",
-        "title": "凭什么，越来越像人？",
-        "subtitle": "理解智能，也许不能只数能力。",
-        "labels": [
-          "模型",
-          "记忆",
-          "行动",
-          "环境"
-        ]
+        "kicker": "TEMPLATE",
+        "title": "[镜头 s10-question]",
+        "subtitle": "（文案由使用者填写）",
+        "labels": []
       }
     }
   ],
   "audio": {
     "recipe": "ep01-philosophy-act1",
     "layers": [
-      {
-        "id": "voice",
-        "role": "voice",
-        "src": "voice-clean.wav",
-        "from": 0,
-        "volume": 1.0,
-        "fadeInFrames": 0,
-        "fadeOutFrames": 0,
-        "placeholder": false
-      },
       {
         "id": "bgm",
         "role": "music",
@@ -215,54 +162,20 @@
     ]
   },
   "captions": {
-    "enabled": true,
-    "src": "captions-display.json",
-    "style": {
-      "fontSize": 52,
-      "bottom": 280,
-      "color": "#f2eee6",
-      "highlight": "#dcad65"
-    }
+    "enabled": false,
+    "src": "captions.json"
   },
   "licenses": [
     {
-      "asset": "voice-original.m4a",
-      "source": "用户提供：第一集试用录音.m4a；仅复制不改源",
-      "license": "用户授权本任务视频制作",
-      "placeholder": false
-    },
-    {
-      "asset": "voice-clean.wav",
-      "source": "voice-original.m4a 的本地音量整理版本",
-      "license": "用户授权本任务视频制作"
-    },
-    {
-      "asset": "dog-opening.png",
-      "source": "Cindy GPT Image Gen / openai/gpt-image-2；2026-11-06 本任务生成",
-      "license": "AI生成概念插画；非实拍证据",
-      "managedReference": "cindy-media://blobs/5a462dccf61f63fe4ce363dc5c9971a55b5edb69dda50239f6e76602da3db1dd.png"
-    },
-    {
-      "asset": "human-machine.png",
-      "source": "Cindy GPT Image Gen / openai/gpt-image-2；2026-11-06 本任务生成",
-      "license": "AI生成概念插画；非实拍证据",
-      "managedReference": "cindy-media://blobs/710757c805ad53e53e6427c9c2d8e37e2a666b7e6236d004d6087bbfd287e304.png"
-    },
-    {
-      "asset": "ep01-philosophy-act1.wav",
-      "source": "linvis audio / assets/recipes/ep01-philosophy-act1.json",
-      "license": "本工程程序化合成，无第三方采样"
-    },
-    {
       "asset": "music-ducked.wav",
-      "source": "程序化BGM经真人配音驱动侧链压缩，仅音乐stem",
+      "source": "程序化BGM（侧链压缩后的纯音乐stem，不含人声）",
       "license": "本工程程序化合成，无第三方采样"
     },
     {
-      "asset": "captions-display.json",
-      "source": "相同录音sha256已核对，faster-whisper词级结果+按录音修正标点；按语义短句分页",
-      "license": "本工程字幕；未伪造未录制内容"
+      "asset": "procedural-graphics",
+      "source": "Linvis concept-scene 组件",
+      "license": "本仓库代码程序化生成"
     }
   ],
-  "placeholder": false
+  "placeholder": true
 }

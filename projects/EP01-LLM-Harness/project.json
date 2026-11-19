@@ -2,7 +2,7 @@
   "$schema": "../../engine/schema/project.schema.json",
   "id": "EP01-LLM-Harness",
   "title": "EP01 — AI 为什么只会聊天，却不会自己生活？",
-  "description": "首期验收样片：8–10 秒电影预告片式开场。黑暗科技风格。音乐与音效由 engine/lib/audio.mjs 程序化合成（无第三方版权）。",
+  "description": "首期验收样片：8–10 秒电影预告片式开场。黑暗科技风格。音乐与音效由 engine/lib/audio.mjs 程序化合成（无第三方版权）。（演示用占位文案，非个人口播稿）",
   "placeholder": false,
   "video": {
     "width": 1080,
@@ -34,7 +34,7 @@
       "durationInFrames": 72,
       "props": {
         "kicker": "LINVIS · EP01",
-        "text": "AI 要取代人类了！",
+        "text": "示例标题文案",
         "tag": "这是今天的头条",
         "hitFrame": 0,
         "fontSize": 168
@@ -54,13 +54,13 @@
       "durationInFrames": 51,
       "props": {
         "flashes": [
-          "写诗。",
+          "示例短句。",
           "编程。",
           "考试。",
           "陪你聊天。",
           "它什么都会。"
         ],
-        "finalLine": "除了……活着。"
+        "finalLine": "示例收束句。"
       }
     },
     {
@@ -70,7 +70,7 @@
       "durationInFrames": 105,
       "props": {
         "kicker": "但是",
-        "question": "但你有没有想过",
+        "question": "示例反问句",
         "sublines": [
           "它连「自己活下去」都做不到",
           "而你，刚刚把电费交了"
@@ -91,7 +91,9 @@
       }
     ]
   },
-  "captions": { "enabled": false },
+  "captions": {
+    "enabled": false
+  },
   "licenses": [
     {
       "asset": "ep01-open.wav",
