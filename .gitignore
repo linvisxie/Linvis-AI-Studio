@@ -17,3 +17,14 @@ Thumbs.db
 .idea/
 
 # 注意：projects/ 与 assets/ 必须提交 —— 它们是可复现的工程源
+
+# 个人内容：录音、口播稿件、配图、转写（本地保留，不入库）
+projects/*/assets/voice-original.*
+projects/*/assets/user-original.*
+projects/*/assets/voice-clean.*
+projects/*/assets/mix-review*
+projects/*/assets/dog-opening.*
+projects/*/assets/human-machine.*
+projects/*/script-source.txt
+projects/*/assets/captions*.json
+tools/author-ep01-act1-v2.py
